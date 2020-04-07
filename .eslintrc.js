@@ -22,5 +22,17 @@ module.exports = {
     '@typescript-eslint'
   ],
   rules: {
+    "trailing-comma": [
+      true,
+      {
+        "multiline": {
+          "objects": "always",
+          "arrays": "always",
+          "functions": "never",
+          "typeLiterals": "ignore"
+        },
+        "esSpecCompliant": true
+      }
+    ]
   }
 }
