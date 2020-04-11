@@ -1,9 +1,5 @@
 import express from 'express'
-import { Pool, Client } from 'pg'
 import cors from 'cors'
-import dotenv from 'dotenv';
-
-dotenv.config();
 
 import routes from './routes';
 
