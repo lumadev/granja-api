@@ -1,46 +1,28 @@
 import express from 'express'
 import { Pool, Client } from 'pg'
 import cors from 'cors'
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 import routes from './routes';
 
-import { DatabaseConfig } from '../database/config'
-
 class App {
-  public express = express();
+  public app = express();
 
   constructor () {
-    this.database()
     this.middlewares()
     this.routes()
   }
 
   private middlewares (): void {
-    this.express.use(express.json())
-    this.express.use(cors())
-  }
-
-  private database (): void {
-    const database = new DatabaseConfig()
-    const { connectionString } = database;
-
-    // const { Pool } = require('pg')
-    // const pool = new Pool({
-    //   connectionString: connectionString,
-    // })
-
-    // pool.query('SELECT * FROM animal', (err, res) => {
-    //   console.log(res);
-    //   pool.end()
-    // })
-
-    const client = new Client({ connectionString })
-    client.connect()
+    this.app.use(express.json())
+    this.app.use(cors())
   }
 
   private routes (): void {
-    this.express.use(routes);
+    this.app.use(routes);
   }
 }
 
-export default new App().express
+export default new App().app
