@@ -11,6 +11,8 @@ pool.on('connect', () => {
   console.log('Base de Dados conectada com sucesso!');
 });
 
-module.exports = {
-  query: (text: string, params: []): Promise<QueryResult> => pool.query(text, params)
+const query = function(text: string, params = []): Promise<QueryResult> { 
+  return pool.query(text, params) 
 };
+
+export default query;

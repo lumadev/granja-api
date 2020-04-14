@@ -1,9 +1,17 @@
 import { Request, Response } from 'express'
-import db from '../../config/database'
+import query from '../../config/database'
 
 class AnimalController {
   async list (req: Request, res: Response) {
-    const response = await db.query("SELECT * FROM animal WHERE status = 'ativo' ORDER BY nome ASC");
+    const response = await query("SELECT * FROM granja.animal WHERE status = 'ativo' ORDER BY nome ASC");
+    
+    return res.status(200).send(response.rows);
+  }
+
+  async get(req: Request, res: Response) {
+    const animalId = req.params.id;
+    const response = await query(`SELECT * FROM granja.animal WHERE id = ${animalId}`);
+
     return res.status(200).send(response.rows);
   }
 
@@ -11,15 +19,22 @@ class AnimalController {
     // TODO to be implemented
   }
 
-  public edit (req: Request, res: Response) {
+  async edit (req: Request, res: Response) {
     const animalId = req.params.id;
+    const { nome, status } = req.body;
+
+    try {
+      await query(`UPDATE granja.animal SET nome = '${nome}', status = '${status}' WHERE id = ${animalId}`);
+      res.status(200).send({ message: 'Animal atualizado com sucesso!', animalId });
+    } catch(error) {
+      res.status(500).send({ error: 'Erro ao atualizar os dados' });
+    }
   }
   
   async delete (req: Request, res: Response) {
     const animalId = req.params.id;
-    await db.query('DELETE FROM animal WHERE id = $1', [
-      animalId
-    ]);
+    await query(`DELETE FROM granja.animal WHERE id = ${animalId}`);
+
     res.status(200).send({ message: 'Animal deletado com sucesso!', animalId });
   }
 }
