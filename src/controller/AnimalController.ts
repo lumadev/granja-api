@@ -3,6 +3,9 @@ import query from '../../config/database'
 
 class AnimalController {
   async list (req: Request, res: Response) {
+    if (req.query.limit === undefined || req.query.page === undefined) {
+      return res.status(500).send({ error: 'Por favor, forneça os parâmetros limit e page para paginação da busca' });
+    }
     const page = String(req.query.page);
     const limit = String(req.query.limit);
     const offset = (parseInt(page) - 1) * parseInt(limit);
