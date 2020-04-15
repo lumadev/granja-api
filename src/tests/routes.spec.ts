@@ -12,7 +12,7 @@ let chaiRequestLib = chaiLib.default.request;
 describe('GET animal', () => {
   it('should return status 200', () => {
     return chaiRequestLib(app)
-    .get('/animal')
+    .get('/animal?limit=10&page=1')
     .then((res: any) => {
       chai.expect(res.status).to.eql(200);
     })
