@@ -3,13 +3,22 @@ import query from '../../config/database'
 
 class AnimalController {
   async list (req: Request, res: Response) {
-    const response = await query("SELECT * FROM granja.animal WHERE status = 'ativo' ORDER BY nome ASC");
-    
+    const page = String(req.query.page);
+    const limit = String(req.query.limit);
+    const offset = (parseInt(page) - 1) * parseInt(limit);
+
+    const response = await query(
+      `SELECT * FROM granja.animal 
+      WHERE status = 'ativo' 
+      ORDER BY nome ASC
+      LIMIT ${limit} OFFSET ${offset}`
+    );
     return res.status(200).send(response.rows);
   }
 
   async get(req: Request, res: Response) {
     const animalId = req.params.id;
+
     const response = await query(`SELECT * FROM granja.animal WHERE id = ${animalId}`);
 
     return res.status(200).send(response.rows);
